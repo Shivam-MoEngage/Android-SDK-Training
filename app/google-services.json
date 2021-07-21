@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "439115924401",
+    "project_id": "androidsdkdemo-4ad9c",
+    "storage_bucket": "androidsdkdemo-4ad9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439115924401:android:943517daea44b578d1f390",
+        "android_client_info": {
+          "package_name": "com.example.moengage_newapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439115924401-v966votb8h922o0720o4otiflgjbmuvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRxRlxmLO6CnytebWynC7KeQjQD39czug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439115924401-v966votb8h922o0720o4otiflgjbmuvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
