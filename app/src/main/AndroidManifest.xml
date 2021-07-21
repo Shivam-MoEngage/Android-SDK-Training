@@ -21,16 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.MainActivity" />
-        <!--        <service-->
-        <!--            android:exported="false"-->
-        <!--            android:name=".notification.PushNotification">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
         <service
-            android:exported="false"
-            android:name="com.moengage.firebase.MoEFireBaseMessagingService">
+            android:name=".notification.PushNotification"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -13,9 +13,9 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.moengage_newapp.R
+import com.example.moengage_newapp.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.example.moengage_newapp.ui.MainActivity
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -42,16 +42,10 @@ class PushNotification : FirebaseMessagingService() {
 
             /*
             *
-            * {
-                  "message": {
-                    "token":"",
-                    "data":{
-                      "title" : "Hello I'm Chitty",
-                      "body"  : "Chitty The Robot !!",
-                      "image"  : ""
-                    }
-                  }
-                }
+            * {gcm_activityName=com.example.moengage_newapp.ui.MainActivity, gcm_notificationType=normal notification, moe_cid_attr={"moe_campaign_id":"000000000000000078026512"}, push_from=moengage, gcm_alert=How are you !!, gcm_title=Hello World, FallBackFlagAndroid=false, gcm_campaign_id=000000000000000078026512_L_0, moe_channel_id=moe_default_channel}
+            *
+            *
+            *
             *
             * */
 
@@ -59,18 +53,19 @@ class PushNotification : FirebaseMessagingService() {
             val title = remoteMessage.data["gcm_title"]
 
             //message will contain the Push Message
+            val messageBody = remoteMessage.data["gcm_alert"]
 
             //Image Uri
             val imageUri = remoteMessage.data["image"]
             //To get a Bitmap image from the URL received
             val bitmap = getBitmapfromUrl(imageUri);
-//            handleNotificationPayload(title, messageBody, bitmap)
+            handleNotificationPayload(title, messageBody, bitmap)
         }
     }
 
     private fun handleNotificationPayload(message:String?,messageBody:String?,image:Bitmap?){
 
-        if (message == null || messageBody == null || image == null)
+        if (message == null || messageBody == null)
             return
 
         val channelId = "default"
@@ -84,7 +79,6 @@ class PushNotification : FirebaseMessagingService() {
                 .setContentTitle(message)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setStyle(NotificationCompat.BigPictureStyle().bigPicture(image))
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
 
