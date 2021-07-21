@@ -14,17 +14,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moengage_newapp.MoEngageAnalyticsHelper
 import com.example.moengage_newapp.R
 import com.example.moengage_newapp.adapter.NewsRecyclerAdapter
-import com.example.moengage_newapp.util.exhaustive
-import com.example.moengage_newapp.util.showSnackbar
 import com.example.moengage_newapp.adapter.Page
 import com.example.moengage_newapp.data.Article
 import com.example.moengage_newapp.databinding.FragmentNewsBinding
 import com.example.moengage_newapp.util.Resource
+import com.example.moengage_newapp.util.exhaustive
+import com.example.moengage_newapp.util.showSnackbar
 import com.example.moengage_newapp.viewmodels.NewsViewModel
+import com.moengage.core.Properties
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -131,28 +134,28 @@ class FragmentNews() : Fragment() {
 
         //Adapting the action bar icon based on adapter current position
         currentAdapterPos.observe(viewLifecycleOwner){ position ->
-            if (position == 1 ){
-                binding.actionIcon.setImageResource(R.drawable.ic_baseline_vertical_align_top_24)
-            }else if (position == 0){
-                binding.actionIcon.setImageResource(R.drawable.ic_baseline_refresh_24)
-            }
+//            if (position == 1 ){
+//                binding.actionIcon.setImageResource(R.drawable.ic_baseline_vertical_align_top_24)
+//            }else if (position == 0){
+//                binding.actionIcon.setImageResource(R.drawable.ic_baseline_refresh_24)
+//            }
 
             val adapter = newsArticleAdapter.getCurrentItem(position)
             adapter?.let { setBookMarkIcon(it.isBookMarked) }
         }
 
         //Adapting the action bar action based on current adapter position
-        binding.actionIcon.setOnClickListener{
-            if (currentAdapterPos.value!! > 0){
-                binding.newsRecycler.smoothScrollToPosition(0)
-            }else{
-                viewModel.onManualRefresh()
-            }
-        }
+//        binding.actionIcon.setOnClickListener{
+//            if (currentAdapterPos.value!! > 0){
+//                binding.newsRecycler.smoothScrollToPosition(0)
+//            }else{
+//                viewModel.onManualRefresh()
+//            }
+//        }
 
         //On ActionBar
-        binding.backIcon.setOnClickListener{
-            if (activity != null && activity is MainActivity){
+        binding.backIcon.setOnClickListener {
+            if (activity != null && activity is MainActivity) {
                 (activity as MainActivity).moveToPage(Page.FragmentBookMark)
             }
         }
@@ -164,12 +167,16 @@ class FragmentNews() : Fragment() {
             }
         }
 
-        binding.shareParent.setOnClickListener{
+        binding.shareParent.setOnClickListener {
             shareNews()
         }
 
-        binding.sortParent.setOnClickListener{
+        binding.sortParent.setOnClickListener {
             sortNews()
+        }
+
+        binding.logoutText.setOnClickListener {
+            logoutUser()
         }
     }
 
@@ -197,18 +204,33 @@ class FragmentNews() : Fragment() {
     }
 
     //On Bookmark Clicked
-    private fun onBookMark(article: Article){
+    private fun onBookMark(article: Article) {
         viewModel.onBookmarkClick(article)
         setBookMarkIcon(!article.isBookMarked)
+
+        requireContext().let {
+
+            val properties = Properties().apply {
+                addAttribute("articleUrl", article.url)
+                addAttribute("articleTitle", article.title)
+            }
+            MoEngageAnalyticsHelper.trackEvents(it, "articleSaved", properties)
+        }
     }
 
     //Update Bookmark Icon
-    private fun setBookMarkIcon(isBookMarked: Boolean){
+    private fun setBookMarkIcon(isBookMarked: Boolean) {
         binding.bkIcon.setImageResource(
-                when(isBookMarked){
-                    true -> R.drawable.ic_baseline_bookmark_24
-                    else -> R.drawable.ic_baseline_bookmark_border_24
-                }
+            when (isBookMarked) {
+                true -> R.drawable.ic_baseline_bookmark_24
+                else -> R.drawable.ic_baseline_bookmark_border_24
+            }
         )
+    }
+
+    private fun logoutUser() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).logoutUser()
+        }
     }
 }

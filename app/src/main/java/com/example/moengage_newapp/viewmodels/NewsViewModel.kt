@@ -1,14 +1,18 @@
 package com.example.moengage_newapp.viewmodels
 
-import androidx.lifecycle.*
-import com.example.moengage_newapp.util.PreferenceManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.moengage_newapp.data.Article
 import com.example.moengage_newapp.data.NewsRepository
+import com.example.moengage_newapp.util.PreferenceManager
 import com.example.moengage_newapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -19,7 +23,7 @@ class NewsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    val preferenceFlow = preferenceManager.preferenceFlow
+    private val preferenceFlow = preferenceManager.preferenceFlow
     private val eventChannel = Channel<Event>()
     val events = eventChannel.receiveAsFlow()
 

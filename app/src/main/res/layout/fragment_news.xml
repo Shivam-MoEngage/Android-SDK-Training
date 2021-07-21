@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,16 +31,16 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                        android:layout_height="25dp"/>
+                        android:layout_height="25dp" />
 
-                    <ImageView
-                        android:id="@+id/actionIcon"
-                        android:layout_width="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="12dp"
-                        android:src="@drawable/ic_baseline_refresh_24"
-                        android:layout_height="25dp"/>
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/actionIcon"-->
+                    <!--                        android:layout_width="25dp"-->
+                    <!--                        android:layout_height="25dp"-->
+                    <!--                        android:layout_alignParentRight="true"-->
+                    <!--                        android:layout_centerVertical="true"-->
+                    <!--                        android:layout_marginRight="12dp"-->
+                    <!--                        android:src="@drawable/ic_baseline_refresh_24" />-->
 
                     <TextView
                         android:id="@+id/toolBarText"
@@ -52,7 +51,21 @@
                         android:textStyle="bold"
                         android:layout_centerInParent="true"
                         android:fontFamily="sans-serif-condensed-light"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/logoutText"
+                        android:layout_width="wrap_content"
+                        android:text="Logout"
+                        android:textColor="@color/bookmarkColor"
+                        android:textSize="16dp"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:layout_marginRight="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="sans-serif-black"
+                        android:layout_height="wrap_content" />
 
                     <View
                         android:background="@color/bookmarkColor"
@@ -60,7 +73,7 @@
                         android:layout_marginBottom="2dp"
                         android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_height="4dp"/>
+                        android:layout_height="4dp" />
 
 
                 </RelativeLayout>
