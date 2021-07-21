@@ -1,6 +1,10 @@
 package com.example.moengage_newapp
 
 import android.app.Application
+import com.moengage.core.LogLevel
+import com.moengage.core.MoEngage
+import com.moengage.core.config.LogConfig
+import com.moengage.core.config.NotificationConfig
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -9,21 +13,21 @@ class NewsApp : Application(){
     override fun onCreate() {
         super.onCreate()
 
-//        val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
-//            .configureLogs(LogConfig(LogLevel.VERBOSE, true))
-//            .configureNotificationMetaData(
-//                NotificationConfig(
-//                    R.drawable.ic_baseline_bookmark_24,
-//                    R.drawable.ic_launcher_background,
-//                    R.color.design_default_color_error,
-//                    tone = null,
-//                    isMultipleNotificationInDrawerEnabled = true,
-//                    isBuildingBackStackEnabled = true,
-//                    isLargeIconDisplayEnabled = true
-//                )
-//            ).build()
-//
-//        MoEngage.initialise(moEngage)
+        val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
+            .configureLogs(LogConfig(LogLevel.VERBOSE, true))
+            .configureNotificationMetaData(
+                NotificationConfig(
+                    R.drawable.ic_baseline_bookmark_24,
+                    R.drawable.ic_launcher_background,
+                    R.color.design_default_color_error,
+                    tone = null,
+                    isMultipleNotificationInDrawerEnabled = true,
+                    isBuildingBackStackEnabled = true,
+                    isLargeIconDisplayEnabled = true
+                )
+            ).build()
+
+        MoEngage.initialise(moEngage)
 //        trackInstallOrUpdate()
     }
 
