@@ -1,10 +1,14 @@
 package com.example.moengage_newapp
 
 import android.app.Application
+import android.content.Context
+import android.util.Log
+import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
 import com.moengage.core.config.LogConfig
 import com.moengage.core.config.NotificationConfig
+import com.moengage.core.model.AppStatus
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -28,30 +32,30 @@ class NewsApp : Application(){
             ).build()
 
         MoEngage.initialise(moEngage)
-//        trackInstallOrUpdate()
+        trackInstallOrUpdate()
     }
 
-//    private fun trackInstallOrUpdate() {
-//
-//        val versionCode = "version_code"
-//
-//        //keys are just sample keys, use suitable keys for the apps
-//        val preferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE) ?: return
-//
-//        //Fresh Install
-//        if(!preferences.contains(versionCode)){
-//            preferences.edit().putInt(versionCode,BuildConfig.VERSION_CODE).apply()
-//            MoEHelper.getInstance(this).setAppStatus(AppStatus.INSTALL)
-//            Log.v("NewsApp","Fresh Install")
-//            return
-//        }
-//
-//        //Update
-//        val currentVersion = preferences.getInt(versionCode, 1)
-//        if (currentVersion < BuildConfig.VERSION_CODE){
-//            preferences.edit().putInt(versionCode,BuildConfig.VERSION_CODE).apply()
-//            MoEHelper.getInstance(this).setAppStatus(AppStatus.UPDATE)
-//            Log.v("NewsApp","App Updated")
-//         }
-//    }
+    private fun trackInstallOrUpdate() {
+
+        val versionCode = "version_code"
+
+        //keys are just sample keys, use suitable keys for the apps
+        val preferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE) ?: return
+
+        //Fresh Install
+        if (!preferences.contains(versionCode)) {
+            preferences.edit().putInt(versionCode, BuildConfig.VERSION_CODE).apply()
+            MoEHelper.getInstance(this).setAppStatus(AppStatus.INSTALL)
+            Log.v("MoEngage", "Fresh Install")
+            return
+        }
+
+        //Update
+        val currentVersion = preferences.getInt(versionCode, 1)
+        if (currentVersion < BuildConfig.VERSION_CODE) {
+            preferences.edit().putInt(versionCode, BuildConfig.VERSION_CODE).apply()
+            MoEHelper.getInstance(this).setAppStatus(AppStatus.UPDATE)
+            Log.v("MoEngage", "App Updated")
+        }
+    }
 }
