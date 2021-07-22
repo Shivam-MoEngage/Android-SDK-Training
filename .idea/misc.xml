@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/fragment_news.xml" value="0.18206521739130435" />
         <entry key="app/src/main/res/layout/item_news.xml" value="0.18206521739130435" />
+        <entry key="app/src/main/res/layout/notification_clicked.xml" value="0.12239583333333333" />
       </map>
     </option>
   </component>

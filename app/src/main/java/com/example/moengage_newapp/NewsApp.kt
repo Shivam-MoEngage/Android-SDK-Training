@@ -9,6 +9,7 @@ import com.moengage.core.MoEngage
 import com.moengage.core.config.LogConfig
 import com.moengage.core.config.NotificationConfig
 import com.moengage.core.model.AppStatus
+import com.moengage.pushbase.MoEPushHelper
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -32,6 +33,7 @@ class NewsApp : Application(){
             ).build()
 
         MoEngage.initialise(moEngage)
+        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
         trackInstallOrUpdate()
     }
 
