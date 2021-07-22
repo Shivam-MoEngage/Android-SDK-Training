@@ -17,6 +17,14 @@ class CustomMessagePushListener() : PushMessageListener() {
         notificationPayload: NotificationPayload
     ): NotificationCompat.Builder {
         val builder = super.onCreateNotification(context, notificationPayload)
+
+        val title = notificationPayload.payload.get("noti_title").toString()
+        val content = notificationPayload.payload.get("noti_content").toString()
+
+        builder.setContentTitle(title)
+        builder.setContentText(content)
+        builder.setOngoing(true)
+
         return builder
     }
 
