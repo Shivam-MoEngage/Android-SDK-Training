@@ -11,8 +11,10 @@ import com.example.moengage_newapp.databinding.ActivityLoginBinding
 import com.example.moengage_newapp.ui.MainActivity
 import com.example.moengage_newapp.util.Helper
 import com.example.moengage_newapp.viewmodels.LoginViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.moengage.core.Properties
+import com.moengage.firebase.MoEFireBaseHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,6 +66,13 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
+        }
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { p0 ->
+            if (p0.isSuccessful) {
+                val token = p0.result ?: return@addOnCompleteListener
+                MoEFireBaseHelper.getInstance().passPushToken(applicationContext, token)
+            }
         }
     }
 

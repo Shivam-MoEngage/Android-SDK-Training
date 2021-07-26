@@ -35,8 +35,10 @@ class CustomMessagePushListener() : PushMessageListener() {
     * value - "true/false"
     * */
     override fun isNotificationRequired(context: Context, payload: Bundle): Boolean {
-        super.isNotificationRequired(context, payload)
-        return payload.get("showNotification").toString().toBoolean()
+        if (super.isNotificationRequired(context, payload)) {
+            return payload.get("showNotification").toString().toBoolean()
+        }
+        return super.isNotificationRequired(context, payload)
     }
 
 

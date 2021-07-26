@@ -28,7 +28,7 @@ class PushNotification : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         Log.i("FCM Token", p0)
-
+        MoEFireBaseHelper.getInstance().passPushToken(applicationContext, p0)
         //Whenever a new token is generated, and backend server is resposible for send fcm
         // token should also be updated their
     }

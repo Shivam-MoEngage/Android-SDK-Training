@@ -3,12 +3,16 @@ package com.example.moengage_newapp
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.google.firebase.messaging.RemoteMessage
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
+import com.moengage.core.config.FcmConfig
 import com.moengage.core.config.LogConfig
 import com.moengage.core.config.NotificationConfig
 import com.moengage.core.model.AppStatus
+import com.moengage.firebase.MoEFireBaseHelper
+import com.moengage.firebase.listener.FirebaseEventListener
 import com.moengage.pushbase.MoEPushHelper
 import dagger.hilt.android.HiltAndroidApp
 
@@ -30,11 +34,25 @@ class NewsApp : Application(){
                     isBuildingBackStackEnabled = true,
                     isLargeIconDisplayEnabled = true
                 )
+            ).configureFcm(
+                FcmConfig(
+                    false
+                )
             ).build()
-
         MoEngage.initialise(moEngage)
         MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
         trackInstallOrUpdate()
+
+        MoEFireBaseHelper.getInstance().addEventListener(object : FirebaseEventListener() {
+            override fun onNonMoEngageMessageReceived(remoteMessage: RemoteMessage) {
+                super.onNonMoEngageMessageReceived(remoteMessage)
+            }
+
+            override fun onTokenAvailable(token: String) {
+                super.onTokenAvailable(token)
+                Log.v("MoEngage", "OnTokenAvailable: $token")
+            }
+        })
     }
 
     private fun trackInstallOrUpdate() {
