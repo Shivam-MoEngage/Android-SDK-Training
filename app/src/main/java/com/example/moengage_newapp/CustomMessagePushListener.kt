@@ -1,8 +1,10 @@
 package com.example.moengage_newapp
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.moengage.core.internal.utils.isNullOrEmpty
@@ -16,16 +18,22 @@ class CustomMessagePushListener() : PushMessageListener() {
         context: Context,
         notificationPayload: NotificationPayload
     ): NotificationCompat.Builder {
-        val builder = super.onCreateNotification(context, notificationPayload)
 
-        val title = notificationPayload.payload.get("noti_title").toString()
-        val content = notificationPayload.payload.get("noti_content").toString()
+        val activityName = notificationPayload.payload.getString("gcm_activityName", "")
 
-        builder.setContentTitle(title)
-        builder.setContentText(content)
-        builder.setOngoing(true)
+        val redirectIntent = if (!isNullOrEmpty(activityName)) {
+            Intent(context, Class.forName(activityName))
+        } else null
 
-        return builder
+        val pendingIntent =
+            PendingIntent.getActivity(context, 0, redirectIntent, PendingIntent.FLAG_ONE_SHOT)
+
+        return NotificationCompat.Builder(context, "moe_default_channel")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(notificationPayload.payload.getString("gcm_title", ""))
+            .setContentText(notificationPayload.payload.getString("gcm_alert", ""))
+            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setContentIntent(pendingIntent)
     }
 
 
@@ -36,7 +44,7 @@ class CustomMessagePushListener() : PushMessageListener() {
     * */
     override fun isNotificationRequired(context: Context, payload: Bundle): Boolean {
         if (super.isNotificationRequired(context, payload)) {
-            return payload.get("showNotification").toString().toBoolean()
+            return payload.getBoolean("showNotification", true)
         }
         return super.isNotificationRequired(context, payload)
     }
