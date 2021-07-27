@@ -52,7 +52,7 @@ class CustomMessagePushListener() : PushMessageListener() {
 
     override fun onHandleRedirection(activity: Activity, payload: Bundle) {
 
-        val activityName = payload.get("redirection_activity").toString()
+        val activityName = payload.getString("redirection_activity", "")
         val redirectIntent = if (!isNullOrEmpty(activityName)) {
             Intent(activity, Class.forName(activityName))
         } else return super.onHandleRedirection(activity, payload)

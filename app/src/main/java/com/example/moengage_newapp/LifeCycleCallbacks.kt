@@ -1,0 +1,21 @@
+package com.example.moengage_newapp
+
+import android.content.Context
+import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import com.moengage.inapp.MoEInAppHelper
+
+class LifeCycleCallbacks(private val context: Context) : LifecycleObserver {
+
+    private val TAG = "MainActivity LifeCycle"
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onStart() {
+        Log.v(TAG, "OnStart()")
+        MoEInAppHelper.getInstance().showInApp(context)
+        MoEInAppHelper.getInstance().getSelfHandledInApp(context)
+    }
+
+}

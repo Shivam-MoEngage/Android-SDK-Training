@@ -8,11 +8,13 @@ import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
 import com.moengage.core.config.FcmConfig
+import com.moengage.core.config.InAppConfig
 import com.moengage.core.config.LogConfig
 import com.moengage.core.config.NotificationConfig
 import com.moengage.core.model.AppStatus
 import com.moengage.firebase.MoEFireBaseHelper
 import com.moengage.firebase.listener.FirebaseEventListener
+import com.moengage.inapp.MoEInAppHelper
 import com.moengage.pushbase.MoEPushHelper
 import dagger.hilt.android.HiltAndroidApp
 
@@ -21,6 +23,9 @@ class NewsApp : Application(){
 
     override fun onCreate() {
         super.onCreate()
+
+        val inAppSet = mutableSetOf<Class<*>>()
+        inAppSet.add(OnNotificationClickActivity::class.java)
 
         val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
             .configureLogs(LogConfig(LogLevel.VERBOSE, true))
@@ -38,9 +43,16 @@ class NewsApp : Application(){
                 FcmConfig(
                     false
                 )
-            ).build()
+            ).configureInApps(
+                InAppConfig(
+                    false,
+                    inAppSet
+                )
+            )
+            .build()
         MoEngage.initialise(moEngage)
         MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
+        MoEInAppHelper.getInstance().registerListener(InAppListener(this))
         trackInstallOrUpdate()
 
         MoEFireBaseHelper.getInstance().addEventListener(object : FirebaseEventListener() {
