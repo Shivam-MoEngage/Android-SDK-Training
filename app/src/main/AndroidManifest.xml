@@ -40,7 +40,7 @@
         <activity
             android:name="com.moe.pushlibrary.activities.MoEActivity"
             android:label="[MainActivity]"
-            android:parentActivityName=".ui.MainActivity"></activity>
+            android:parentActivityName=".ui.MainActivity" />
     </application>
 
 </manifest>

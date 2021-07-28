@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.moengage.inapp.MoEInAppHelper
 
 class LifeCycleCallbacks(private val context: Context) : LifecycleObserver {
 
@@ -14,8 +13,6 @@ class LifeCycleCallbacks(private val context: Context) : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         Log.v(TAG, "OnStart()")
-        MoEInAppHelper.getInstance().showInApp(context)
-        MoEInAppHelper.getInstance().getSelfHandledInApp(context)
     }
 
 }

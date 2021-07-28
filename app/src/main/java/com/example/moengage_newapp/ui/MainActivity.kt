@@ -7,10 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager2.widget.ViewPager2
-import com.example.moengage_newapp.LifeCycleCallbacks
-import com.example.moengage_newapp.LoginActivity
-import com.example.moengage_newapp.MoEngageAnalyticsHelper
-import com.example.moengage_newapp.R
+import com.example.moengage_newapp.*
 import com.example.moengage_newapp.adapter.Page
 import com.example.moengage_newapp.adapter.ViewPagerAdapter
 import com.example.moengage_newapp.data.Article
@@ -136,5 +133,16 @@ class MainActivity : AppCompatActivity() {
                     Intent.FLAG_ACTIVITY_NEW_TASK
         )
         startActivity(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        InAppController.getInstance().registerActivity(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        InAppController.getInstance().unRegisterActivity(this)
     }
 }

@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.moengage.core.Properties
 import com.moengage.firebase.MoEFireBaseHelper
+import com.moengage.inapp.MoEInAppHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -74,6 +75,16 @@ class LoginActivity : AppCompatActivity() {
                 MoEFireBaseHelper.getInstance().passPushToken(applicationContext, token)
             }
         }
+        activityBinding.showInApps.setOnClickListener {
+            MoEInAppHelper.getInstance().showInApp(this)
+        }
+
+        activityBinding.showSelfHandledInApps.setOnClickListener {
+            MoEInAppHelper.getInstance().getSelfHandledInApp(this)
+        }
+
+        activityBinding.nudge.initialiseNudgeView(this)
+
     }
 
     private fun moveToNextScreen(user: String?, isFromSavedSession: Boolean) {
@@ -87,5 +98,16 @@ class LoginActivity : AppCompatActivity() {
 
         startActivity(intent)
         finish()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        InAppController.getInstance().registerActivity(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        InAppController.getInstance().unRegisterActivity(this)
     }
 }
