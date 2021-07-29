@@ -2,18 +2,18 @@ package com.example.moengage_newapp
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
-import com.moengage.core.config.FcmConfig
-import com.moengage.core.config.InAppConfig
-import com.moengage.core.config.LogConfig
-import com.moengage.core.config.NotificationConfig
+import com.moengage.core.config.*
 import com.moengage.core.model.AppStatus
 import com.moengage.firebase.MoEFireBaseHelper
 import com.moengage.firebase.listener.FirebaseEventListener
+import com.moengage.geofence.MoEGeofenceHelper
+import com.moengage.geofence.listener.OnGeofenceHitListener
 import com.moengage.inapp.MoEInAppHelper
 import com.moengage.pushbase.MoEPushHelper
 import dagger.hilt.android.HiltAndroidApp
@@ -48,11 +48,24 @@ class NewsApp : Application(){
                     false,
                     inAppSet
                 )
+            ).configureGeofence(
+                GeofenceConfig(
+                    true,
+                    true
+                )
             )
             .build()
         MoEngage.initialise(moEngage)
         MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
         MoEInAppHelper.getInstance().registerListener(InAppListener(this))
+
+        MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
+            override fun geofenceHit(geoFenceHit: Intent): Boolean {
+                Log.v("MoEngage_GEO", geoFenceHit.data.toString())
+                return true
+            }
+        })
+
         trackInstallOrUpdate()
 
         MoEFireBaseHelper.getInstance().addEventListener(object : FirebaseEventListener() {

@@ -93,6 +93,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.lifecycle:lifecycle-process:2.2.0")
     implementation("com.moengage:moe-android-sdk:11.3.01")
+    implementation("com.moengage:geofence:1.1.00")
+    implementation("com.moengage:inbox-ui:1.0.01")
+
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+//    implementation("com.moengage:inbox-core:1.0.0")
 }
 kapt {
     correctErrorTypes true
