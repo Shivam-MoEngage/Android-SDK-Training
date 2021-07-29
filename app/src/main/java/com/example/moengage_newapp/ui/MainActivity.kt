@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         when (page) {
             Page.FragmentBookMark -> binding.viewPager.currentItem = 0
             Page.FragmentNews -> binding.viewPager.currentItem = 1
+            Page.FragmentInBox -> binding.viewPager.currentItem = 2
         }
     }
 

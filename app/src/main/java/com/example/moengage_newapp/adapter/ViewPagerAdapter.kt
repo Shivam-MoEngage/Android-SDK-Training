@@ -4,14 +4,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.moengage_newapp.ui.FragmentBookmark
+import com.example.moengage_newapp.ui.FragmentInbox
 import com.example.moengage_newapp.ui.FragmentNews
 
 
 //ViewPager
-private const val MAX_PAGE = 2
-enum class Page{
+private const val MAX_PAGE = 3
+enum class Page {
     FragmentNews,
-    FragmentBookMark
+    FragmentBookMark,
+    FragmentInBox
 }
 class ViewPagerAdapter(fa:FragmentActivity) :FragmentStateAdapter(fa) {
 
@@ -23,6 +25,7 @@ class ViewPagerAdapter(fa:FragmentActivity) :FragmentStateAdapter(fa) {
         return when {
             position == 0 -> FragmentBookmark()
             position == 1 -> FragmentNews()
+            position == 2 -> FragmentInbox()
             else -> FragmentNews()
         }
     }
