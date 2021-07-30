@@ -6,29 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moengage_newapp.R
+import com.example.moengage_newapp.adapter.InboxCustomAdapter
 import com.example.moengage_newapp.adapter.Page
 import com.moengage.core.internal.logger.Logger
 import com.moengage.inbox.core.MoEInboxHelper
 import com.moengage.inbox.core.listener.OnMessagesAvailableListener
 import com.moengage.inbox.core.model.InboxMessage
-import com.moengage.inbox.ui.MoEInboxUiHelper
-import com.moengage.inbox.ui.adapter.InboxListAdapter
-import com.moengage.inbox.ui.adapter.sdkdefault.DefaultInboxAdapter
-import com.moengage.inbox.ui.listener.OnMessageClickListener
 import kotlinx.coroutines.launch
 
 class FragmentInbox : Fragment() {
 
-    private lateinit var inboxListAdapter: InboxListAdapter
+    private lateinit var inboxListAdapter: InboxCustomAdapter
     private lateinit var inboxRecyclerView: RecyclerView
     private lateinit var inboxEmptyTextView: TextView
-    private val inboxMessages: MutableLiveData<List<InboxMessage>> = MutableLiveData()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
@@ -42,16 +39,22 @@ class FragmentInbox : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        MoEInboxUiHelper.getInstance().setInboxAdapter(DefaultInboxAdapter())
-
         val backButton = view.findViewById<ImageView>(R.id.backIcon)
         backButton.setOnClickListener {
             onBackButtonPressed()
         }
 
+        inboxListAdapter = InboxCustomAdapter(
+            onMessageClicked = { message, position ->
+                Toast.makeText(
+                    requireContext(),
+                    "Message clicked at position $position",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
+
         inboxRecyclerView = view.findViewById<RecyclerView>(R.id.inbox_recyclerView)
-        inboxListAdapter =
-            InboxListAdapter(requireContext(), MoEInboxUiHelper.getInstance().getInboxAdapter())
         inboxEmptyTextView = view.findViewById(R.id.moeInboxEmpty)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
 
@@ -64,7 +67,24 @@ class FragmentInbox : Fragment() {
             refresh()
         }
 
-        MoEInboxUiHelper.getInstance().setOnMessageClickListener(onMessageClickListener)
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val message = inboxListAdapter.currentList[position]
+                MoEInboxHelper.getInstance().deleteMessage(requireContext(), message)
+                refresh()
+            }
+
+        }).attachToRecyclerView(inboxRecyclerView)
     }
 
     override fun onStart() {
@@ -82,13 +102,6 @@ class FragmentInbox : Fragment() {
         MoEInboxHelper.getInstance().fetchAllMessagesAsync(requireContext(), onMessageAvailable)
     }
 
-    private val onMessageClickListener = object : OnMessageClickListener {
-        override fun onMessageClick(inboxMessage: InboxMessage): Boolean {
-            return true
-        }
-
-    }
-
     private val onMessageAvailable = object : OnMessagesAvailableListener {
         override fun onMessagesAvailable(messageList: List<InboxMessage>) {
             try {
@@ -102,7 +115,7 @@ class FragmentInbox : Fragment() {
 
                     inboxRecyclerView.visibility = View.VISIBLE
                     inboxEmptyTextView.visibility = View.GONE
-                    inboxListAdapter.setInboxList(messageList.toMutableList())
+                    inboxListAdapter.submitList(messageList)
                 }
             } catch (e: Exception) {
                 Logger.v("$tag onMessagesReceived(): ", e)
