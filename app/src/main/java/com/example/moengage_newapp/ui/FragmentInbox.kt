@@ -51,6 +51,7 @@ class FragmentInbox : Fragment() {
                     "Message clicked at position $position",
                     Toast.LENGTH_SHORT
                 ).show()
+                MoEInboxHelper.getInstance().trackMessageClicked(requireContext(), message)
             }
         )
 
