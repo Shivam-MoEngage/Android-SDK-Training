@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.moengage.core.internal.utils.isNullOrEmpty
@@ -28,11 +27,10 @@ class CustomMessagePushListener() : PushMessageListener() {
         val pendingIntent =
             PendingIntent.getActivity(context, 0, redirectIntent, PendingIntent.FLAG_ONE_SHOT)
 
-        return NotificationCompat.Builder(context, "moe_default_channel")
+        return NotificationCompat.Builder(context, "hello_world")
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(notificationPayload.payload.getString("gcm_title", ""))
             .setContentText(notificationPayload.payload.getString("gcm_alert", ""))
-            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setContentIntent(pendingIntent)
     }
 

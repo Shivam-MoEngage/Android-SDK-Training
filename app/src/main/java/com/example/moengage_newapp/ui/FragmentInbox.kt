@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moengage_newapp.R
@@ -19,11 +18,13 @@ import com.moengage.core.internal.logger.Logger
 import com.moengage.inbox.core.MoEInboxHelper
 import com.moengage.inbox.core.listener.OnMessagesAvailableListener
 import com.moengage.inbox.core.model.InboxMessage
+import com.moengage.inbox.ui.adapter.InboxListAdapter
 import kotlinx.coroutines.launch
 
 class FragmentInbox : Fragment() {
 
-    private lateinit var inboxListAdapter: InboxCustomAdapter
+    private lateinit var inboxCustomAdapter: InboxCustomAdapter
+    private lateinit var inboxListAdapter: InboxListAdapter
     private lateinit var inboxRecyclerView: RecyclerView
     private lateinit var inboxEmptyTextView: TextView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -44,7 +45,7 @@ class FragmentInbox : Fragment() {
             onBackButtonPressed()
         }
 
-        inboxListAdapter = InboxCustomAdapter(
+        inboxCustomAdapter = InboxCustomAdapter(
             onMessageClicked = { message, position ->
                 Toast.makeText(
                     requireContext(),
@@ -54,6 +55,8 @@ class FragmentInbox : Fragment() {
                 MoEInboxHelper.getInstance().trackMessageClicked(requireContext(), message)
             }
         )
+
+        inboxListAdapter = InboxListAdapter(requireContext(), inboxCustomAdapter)
 
         inboxRecyclerView = view.findViewById<RecyclerView>(R.id.inbox_recyclerView)
         inboxEmptyTextView = view.findViewById(R.id.moeInboxEmpty)
@@ -67,25 +70,6 @@ class FragmentInbox : Fragment() {
         swipeRefreshLayout.setOnRefreshListener {
             refresh()
         }
-
-        ItemTouchHelper(object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val message = inboxListAdapter.currentList[position]
-                MoEInboxHelper.getInstance().deleteMessage(requireContext(), message)
-                refresh()
-            }
-
-        }).attachToRecyclerView(inboxRecyclerView)
     }
 
     override fun onStart() {
@@ -116,7 +100,7 @@ class FragmentInbox : Fragment() {
 
                     inboxRecyclerView.visibility = View.VISIBLE
                     inboxEmptyTextView.visibility = View.GONE
-                    inboxListAdapter.submitList(messageList)
+                    inboxListAdapter.setInboxList(messageList.toMutableList())
                 }
             } catch (e: Exception) {
                 Logger.v("$tag onMessagesReceived(): ", e)

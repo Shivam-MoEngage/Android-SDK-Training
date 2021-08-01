@@ -1,8 +1,13 @@
 package com.example.moengage_newapp
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.net.Uri
+import android.os.Build
 import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
 import com.moe.pushlibrary.MoEHelper
@@ -62,7 +67,7 @@ class NewsApp : Application(){
         MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
             override fun geofenceHit(geoFenceHit: Intent): Boolean {
                 Log.v("MoEngage_GEO", geoFenceHit.data.toString())
-                return true
+                return false
             }
         })
 
@@ -78,6 +83,7 @@ class NewsApp : Application(){
                 Log.v("MoEngage", "OnTokenAvailable: $token")
             }
         })
+        createNotificationChannel()
     }
 
     private fun trackInstallOrUpdate() {
@@ -103,4 +109,28 @@ class NewsApp : Application(){
             Log.v("MoEngage", "App Updated")
         }
     }
+
+    private fun createNotificationChannel() {
+        val nm =
+            applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "hello_world",
+                "my_channel",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Created by Vipin"
+                enableVibration(true)
+            }
+            val attributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+            channel.setSound(
+                Uri.parse("android.resource://${packageName}/" + R.raw.tone_new),
+                attributes
+            )
+            nm.createNotificationChannel(channel)
+        }
+    }
+
 }
