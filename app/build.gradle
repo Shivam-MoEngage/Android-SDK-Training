@@ -97,7 +97,8 @@ dependencies {
     implementation("com.moengage:inbox-ui:1.0.01")
 
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-//    implementation "com.moengage:inbox-core:1.0.00"
+    implementation("com.moengage:rich-notification:2.2.01")
+    implementation("com.moengage:cards:2.1.00")
 }
 kapt {
     correctErrorTypes true

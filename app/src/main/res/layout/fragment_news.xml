@@ -67,6 +67,14 @@
                         android:fontFamily="sans-serif-black"
                         android:layout_height="wrap_content" />
 
+                    <ImageView
+                        android:id="@+id/cards"
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_baseline_credit_card_24"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/backIcon" />
+
                     <View
                         android:background="@color/bookmarkColor"
                         android:layout_width="40dp"

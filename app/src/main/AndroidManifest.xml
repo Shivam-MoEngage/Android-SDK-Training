@@ -44,6 +44,10 @@
             android:name="com.moe.pushlibrary.activities.MoEActivity"
             android:label="[MainActivity]"
             android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name="com.moengage.cards.ui.CardActivity"
+            android:label="@string/moe_card_feed_title"
+            android:theme="@style/MoECardTheme.NoActionBar" />
     </application>
 
 </manifest>

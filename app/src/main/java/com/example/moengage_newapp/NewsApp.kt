@@ -20,7 +20,6 @@ import com.moengage.firebase.listener.FirebaseEventListener
 import com.moengage.geofence.MoEGeofenceHelper
 import com.moengage.geofence.listener.OnGeofenceHitListener
 import com.moengage.inapp.MoEInAppHelper
-import com.moengage.pushbase.MoEPushHelper
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -61,7 +60,7 @@ class NewsApp : Application(){
             )
             .build()
         MoEngage.initialise(moEngage)
-        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
+//        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
         MoEInAppHelper.getInstance().registerListener(InAppListener(this))
 
         MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
