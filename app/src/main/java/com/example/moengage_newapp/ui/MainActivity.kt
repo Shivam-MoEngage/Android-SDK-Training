@@ -18,6 +18,8 @@ import com.example.moengage_newapp.viewmodels.HomeViewModel
 import com.google.gson.Gson
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.Properties
+import com.segment.analytics.Analytics
+import com.segment.analytics.Traits
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -81,6 +83,12 @@ class MainActivity : AppCompatActivity() {
 
         MoEngageAnalyticsHelper.trackEvents(this, "articleShared", properties)
 
+        Analytics.with(this).track(
+            "segment_event_properties_shared", com.segment.analytics.Properties()
+                .putUrl(article.url)
+                .putTitle(article.title)
+        )
+
 
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
@@ -102,6 +110,12 @@ class MainActivity : AppCompatActivity() {
 
         MoEngageAnalyticsHelper.trackEvents(this, "articleViewed", properties)
 
+        Analytics.with(this).track(
+            "segment_event_properties_opened", com.segment.analytics.Properties()
+                .putUrl(article.url)
+                .putTitle(article.title)
+        )
+
         val uri = Uri.parse(article.url)
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
@@ -117,6 +131,17 @@ class MainActivity : AppCompatActivity() {
         MoEHelper.getInstance(this).setUniqueId(_user.uId)
         MoEHelper.getInstance(this).setFirstName(_user.userName)
         MoEHelper.getInstance(this).setFullName(_user.userName + _user.passWord)
+
+        Analytics.with(this).track("user logged in")
+
+        Analytics.with(this).identify(
+            _user.uId, Traits()
+                .putName(_user.userName)
+                .putEmail("shivam@moengage.com")
+                .putGender("Male")
+                .putAge(24),
+            null
+        )
 
     }
 

@@ -15,23 +15,37 @@ import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
 import com.moengage.core.config.*
 import com.moengage.core.model.AppStatus
+import com.moengage.core.model.IntegrationPartner
 import com.moengage.firebase.MoEFireBaseHelper
 import com.moengage.firebase.listener.FirebaseEventListener
 import com.moengage.geofence.MoEGeofenceHelper
 import com.moengage.geofence.listener.OnGeofenceHitListener
 import com.moengage.inapp.MoEInAppHelper
+import com.segment.analytics.Analytics
+import com.segment.analytics.android.integrations.moengage.MoEngageIntegration
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class NewsApp : Application(){
+class NewsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
+        val analytics = Analytics.Builder(this, "spGnEW0obqwKLkvOGGLlaJFQ7WBCROTr")
+            .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
+            .recordScreenViews() // Enable this to record screen views automatically!
+            .use(MoEngageIntegration.FACTORY)
+            .logLevel(Analytics.LogLevel.VERBOSE)
+            .build()
+
+        // Set the initialized instance as a globally accessible instance.
+        Analytics.setSingletonInstance(analytics);
+
         val inAppSet = mutableSetOf<Class<*>>()
         inAppSet.add(OnNotificationClickActivity::class.java)
 
-        val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
+        val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")
+            .enablePartnerIntegration(IntegrationPartner.SEGMENT)
             .configureLogs(LogConfig(LogLevel.VERBOSE, true))
             .configureNotificationMetaData(
                 NotificationConfig(
@@ -57,8 +71,7 @@ class NewsApp : Application(){
                     true,
                     true
                 )
-            )
-            .build()
+            ).build()
         MoEngage.initialise(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
         MoEInAppHelper.getInstance().registerListener(InAppListener(this))
