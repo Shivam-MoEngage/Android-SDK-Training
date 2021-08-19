@@ -71,7 +71,14 @@ class NewsApp : Application() {
                     true,
                     true
                 )
-            ).build()
+            ).configureMiPush(
+                MiPushConfig(
+                    appId = "2882361520017835",
+                    appKey = "5242001758835",
+                    isRegistrationEnabled = true
+                )
+            )
+            .build()
         MoEngage.initialise(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
         MoEInAppHelper.getInstance().registerListener(InAppListener(this))
