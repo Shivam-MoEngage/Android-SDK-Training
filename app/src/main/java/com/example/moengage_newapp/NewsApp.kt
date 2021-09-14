@@ -32,7 +32,7 @@ class NewsApp : Application(){
         inAppSet.add(OnNotificationClickActivity::class.java)
 
         val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
-            .configureLogs(LogConfig(LogLevel.VERBOSE, true))
+            .configureLogs(LogConfig(LogLevel.VERBOSE, false))
             .configureNotificationMetaData(
                 NotificationConfig(
                     R.drawable.ic_baseline_bookmark_24,
@@ -57,7 +57,13 @@ class NewsApp : Application(){
                     true,
                     true
                 )
-            )
+            ).configureMiPush(
+                MiPushConfig(
+                    appId = "2882303761520017835",
+                    appKey = "5242001758835",
+                    isRegistrationEnabled = true
+                )
+            ).configurePushKit(PushKitConfig(true))
             .build()
         MoEngage.initialise(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()

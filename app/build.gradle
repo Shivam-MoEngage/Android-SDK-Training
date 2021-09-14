@@ -3,17 +3,18 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'com.huawei.agconnect'
 //    id 'com.google.gms.google-services'  // Google Services plugin
 }
 apply plugin: 'dagger.hilt.android.plugin'
 android {
-    compileSdk 31
-    buildToolsVersion "31.0.0"
+    compileSdk 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.example.moengage_newapp"
-        minSdk 16
-        targetSdk 31
+        minSdk 17
+        targetSdk 30
         versionCode 3
         versionName "1.0"
         multiDexEnabled = true
@@ -99,6 +100,17 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation("com.moengage:rich-notification:2.2.01")
     implementation("com.moengage:cards:2.1.00")
+
+//    implementation 'com.segment.analytics.android:analytics:4.10.0'
+//
+//    implementation("com.moengage:moengage-segment-integration:5.4.01") {
+//        transitive = true
+//    }
+
+    implementation("com.moengage:push-amp-plus:3.2.00")
+    implementation("com.moengage:hms-pushkit:2.4.00")
+    implementation "com.huawei.hms:push:5.3.0.304"
+    implementation 'com.huawei.agconnect:agconnect-core:1.5.0.300'
 }
 kapt {
     correctErrorTypes true
