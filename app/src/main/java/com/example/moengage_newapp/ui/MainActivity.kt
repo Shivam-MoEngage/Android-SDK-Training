@@ -1,5 +1,6 @@
 package com.example.moengage_newapp.ui
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -145,5 +146,15 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
 
         InAppController.getInstance().unRegisterActivity(this)
+    }
+
+    fun updateLoginStatus(value: Boolean) {
+
+        val isUserLoggined = "isUserLoggined"
+
+        //keys are just sample keys, use suitable keys for the apps
+        val preferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE) ?: return
+
+        preferences.edit().putBoolean(isUserLoggined, value).apply()
     }
 }

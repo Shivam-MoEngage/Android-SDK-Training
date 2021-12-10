@@ -95,7 +95,8 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("user_data", user)
         intent.putExtra("isFresh", !isFromSavedSession)
-
+//        MoEngage.enableSdk(this)
+//        updateLoginStatus(true)
         startActivity(intent)
         finish()
     }
@@ -109,5 +110,15 @@ class LoginActivity : AppCompatActivity() {
         super.onStop()
 
         InAppController.getInstance().unRegisterActivity(this)
+    }
+
+    fun updateLoginStatus(value: Boolean) {
+
+        val isUserLoggined = "isUserLoggined"
+
+        //keys are just sample keys, use suitable keys for the apps
+        val preferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE) ?: return
+
+        preferences.edit().putBoolean(isUserLoggined, value).apply();
     }
 }

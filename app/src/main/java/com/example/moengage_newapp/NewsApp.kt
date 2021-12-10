@@ -20,6 +20,8 @@ import com.moengage.firebase.listener.FirebaseEventListener
 import com.moengage.geofence.MoEGeofenceHelper
 import com.moengage.geofence.listener.OnGeofenceHitListener
 import com.moengage.inapp.MoEInAppHelper
+import com.moengage.mi.MoEMiPushHelper
+import com.xiaomi.mipush.sdk.MiPushClient
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -89,6 +91,16 @@ class NewsApp : Application(){
             }
         })
         createNotificationChannel()
+
+    }
+
+    private fun registerMoEMiToken() {
+        if (MoEMiPushHelper.getInstance().hasMiUi()) {
+            MiPushClient.registerPush(applicationContext, "2882303761520017835", "5242001758835")
+            val xiaomiToken = MiPushClient.getRegId(applicationContext)
+            if (xiaomiToken != null)
+                MoEMiPushHelper.getInstance().passPushToken(applicationContext, xiaomiToken)
+        }
     }
 
     private fun trackInstallOrUpdate() {
@@ -107,7 +119,8 @@ class NewsApp : Application(){
         }
 
         //Update
-        val currentVersion = preferences.getInt(versionCode, 1)
+        val currentVersion = preferences.getInt(versionCode, -1)
+
         if (currentVersion < BuildConfig.VERSION_CODE) {
             preferences.edit().putInt(versionCode, BuildConfig.VERSION_CODE).apply()
             MoEHelper.getInstance(this).setAppStatus(AppStatus.UPDATE)
@@ -138,4 +151,15 @@ class NewsApp : Application(){
         }
     }
 
+    private fun checkLoginStatus(): Boolean {
+
+        val isUserLoggined = "isUserLoggined"
+
+        //keys are just sample keys, use suitable keys for the apps
+        val preferences =
+            getSharedPreferences("user_preferences", Context.MODE_PRIVATE) ?: return false
+
+        return preferences.getBoolean(isUserLoggined, false)
+
+    }
 }

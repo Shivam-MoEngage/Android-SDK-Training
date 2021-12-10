@@ -25,7 +25,7 @@ class InAppListener(private val context: Context) : InAppMessageListener() {
     }
 
     override fun onSelfHandledAvailable(inAppCampaign: MoEInAppCampaign) {
-
+        super.onSelfHandledAvailable(inAppCampaign)
         val currentActivity = InAppController.getInstance().getCurrentActivity() ?: return
 
         val customView =
