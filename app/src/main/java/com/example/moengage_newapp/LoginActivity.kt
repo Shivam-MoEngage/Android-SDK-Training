@@ -1,6 +1,8 @@
 package com.example.moengage_newapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -120,5 +122,10 @@ class LoginActivity : AppCompatActivity() {
         val preferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE) ?: return
 
         preferences.edit().putBoolean(isUserLoggined, value).apply();
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        MoEInAppHelper.getInstance().onConfigurationChanged()
     }
 }
