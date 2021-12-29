@@ -14,7 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moengage_newapp.R
 import com.example.moengage_newapp.adapter.InboxCustomAdapter
 import com.example.moengage_newapp.adapter.Page
-import com.moengage.core.internal.logger.Logger
+//import com.moengage.core.internal.logger.Logger
 import com.moengage.inbox.core.MoEInboxHelper
 import com.moengage.inbox.core.listener.OnMessagesAvailableListener
 import com.moengage.inbox.core.model.InboxMessage
@@ -103,7 +103,7 @@ class FragmentInbox : Fragment() {
                     inboxListAdapter.setInboxList(messageList.toMutableList())
                 }
             } catch (e: Exception) {
-                Logger.v("$tag onMessagesReceived(): ", e)
+//                Logger.v("$tag onMessagesReceived(): ", e)
             }
         }
     }

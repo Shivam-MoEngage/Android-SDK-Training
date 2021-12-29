@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
@@ -13,14 +12,13 @@ import com.google.firebase.messaging.RemoteMessage
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
-import com.moengage.core.config.*
+import com.moengage.core.config.FcmConfig
 import com.moengage.core.model.AppStatus
 import com.moengage.firebase.MoEFireBaseHelper
 import com.moengage.firebase.listener.FirebaseEventListener
-import com.moengage.geofence.MoEGeofenceHelper
-import com.moengage.geofence.listener.OnGeofenceHitListener
 import com.moengage.inapp.MoEInAppHelper
 import com.moengage.mi.MoEMiPushHelper
+import com.moengage.pushbase.MoEPushHelper
 import com.xiaomi.mipush.sdk.MiPushClient
 import dagger.hilt.android.HiltAndroidApp
 
@@ -33,50 +31,10 @@ class NewsApp : Application(){
         val inAppSet = mutableSetOf<Class<*>>()
         inAppSet.add(OnNotificationClickActivity::class.java)
 
-        val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
-            .configureLogs(LogConfig(LogLevel.VERBOSE, false))
-            .configureNotificationMetaData(
-                NotificationConfig(
-                    R.drawable.ic_baseline_bookmark_24,
-                    R.drawable.ic_launcher_background,
-                    R.color.design_default_color_error,
-                    tone = null,
-                    isMultipleNotificationInDrawerEnabled = true,
-                    isBuildingBackStackEnabled = true,
-                    isLargeIconDisplayEnabled = true
-                )
-            ).configureFcm(
-                FcmConfig(
-                    false
-                )
-            ).configureInApps(
-                InAppConfig(
-                    false,
-                    inAppSet
-                )
-            ).configureGeofence(
-                GeofenceConfig(
-                    true,
-                    true
-                )
-            ).configureMiPush(
-                MiPushConfig(
-                    appId = "2882303761520017835",
-                    appKey = "5242001758835",
-                    isRegistrationEnabled = true
-                )
-            ).configurePushKit(PushKitConfig(true))
-            .build()
-        MoEngage.initialise(moEngage)
-//        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
+        initMoEngage();
+
         MoEInAppHelper.getInstance().registerListener(InAppListener(this))
 
-        MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
-            override fun geofenceHit(geoFenceHit: Intent): Boolean {
-                Log.v("MoEngage_GEO", geoFenceHit.data.toString())
-                return false
-            }
-        })
 
         trackInstallOrUpdate()
 
@@ -161,5 +119,30 @@ class NewsApp : Application(){
 
         return preferences.getBoolean(isUserLoggined, false)
 
+    }
+
+    private fun initMoEngage() {
+
+        val moengage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")
+            .setNotificationSmallIcon(R.drawable.ic_baseline_bookmark_24)
+            .setNotificationLargeIcon(R.drawable.ic_baseline_bookmark_24)
+//            .enableLocationServices()
+            .enableLogsForSignedBuild()
+            .enableMultipleNotificationInDrawer()
+            .optOutPeriodicFlush()
+//            .enablePushKitTokenRegistration()
+            .optOutNavBar()
+//            .optOutInAppOnActivity(inAppOptOut)
+            .configureFcm(FcmConfig(false))
+//            .configureMiPush(MiPushConfig("2882303761518042309", "5601804211309", true))
+//            .configureCards(CardConfig(-1, -1, "MMM dd"))
+//            .setNotificationColor(R.color.notiColor)
+            .enableLogs(LogLevel.VERBOSE)
+//            .optOutDefaultInAppDisplay()
+            .build()
+
+        MoEngage.initialise(moengage)
+
+        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
     }
 }
