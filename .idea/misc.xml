@@ -5,7 +5,7 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/ic_baseline_credit_card_24.xml" value="0.24259259259259258" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1503623188405797" />
         <entry key="app/src/main/res/layout/fragment_bookmark.xml" value="0.18206521739130435" />
         <entry key="app/src/main/res/layout/fragment_inbox.xml" value="0.24270833333333333" />

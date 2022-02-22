@@ -34,7 +34,7 @@ class NewsApp : Application(){
         inAppSet.add(OnNotificationClickActivity::class.java)
 
         val moEngage = MoEngage.Builder(this, "PEEGJ5X088DY40EJMYG67RVX")//enter your own app id
-            .configureLogs(LogConfig(LogLevel.VERBOSE, false))
+            .configureLogs(LogConfig(LogLevel.VERBOSE, true))
             .configureNotificationMetaData(
                 NotificationConfig(
                     R.drawable.ic_baseline_bookmark_24,
@@ -47,7 +47,7 @@ class NewsApp : Application(){
                 )
             ).configureFcm(
                 FcmConfig(
-                    false
+                    true
                 )
             ).configureInApps(
                 InAppConfig(

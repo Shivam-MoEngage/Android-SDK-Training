@@ -36,18 +36,22 @@
         <activity android:name=".ui.MainActivity" />
 
         <service
+            android:exported="false"
+            android:name="com.moengage.firebase.MoEFireBaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".notification.PushNotification"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service> <!-- <service -->
-        <!-- android:exported="false" -->
-        <!-- android:name="com.moengage.firebase.MoEFireBaseMessagingService"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
+        </service>
+
+
         <activity android:name=".OnNotificationClickActivity" />
         <activity
             android:name="com.moe.pushlibrary.activities.MoEActivity"
