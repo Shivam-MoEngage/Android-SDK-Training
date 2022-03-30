@@ -15,7 +15,7 @@ import com.example.moengage_newapp.util.Helper
 import com.example.moengage_newapp.viewmodels.LoginViewModel
 import com.google.gson.Gson
 import com.moengage.core.Properties
-import com.moengage.inapp.MoEInAppHelper
+import com.moengage.core.analytics.MoEAnalyticsHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -76,14 +76,18 @@ class LoginActivity : AppCompatActivity() {
 //            }
 //        }
         activityBinding.showInApps.setOnClickListener {
-            MoEInAppHelper.getInstance().showInApp(this)
+//            MoEInAppHelper.getInstance().showInApp(this)
         }
 
         activityBinding.showSelfHandledInApps.setOnClickListener {
-            MoEInAppHelper.getInstance().getSelfHandledInApp(this)
+//            MoEInAppHelper.getInstance().getSelfHandledInApp(this)
         }
 
-        activityBinding.nudge.initialiseNudgeView(this)
+//        activityBinding.nudge.initialiseNudgeView(this)
+
+        MoEAnalyticsHelper.setUserName(this, "Setting User Name")
+        MoEAnalyticsHelper.setFirstName(this, "Setting First Name")
+        MoEAnalyticsHelper.setLastName(this, "Setting Last Name")
 
     }
 
@@ -124,6 +128,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        MoEInAppHelper.getInstance().onConfigurationChanged()
+//        MoEInAppHelper.getInstance().onConfigurationChanged()
     }
 }

@@ -9,17 +9,13 @@ import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import com.google.firebase.messaging.RemoteMessage
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
 import com.moengage.core.config.*
 import com.moengage.core.model.AppStatus
-import com.moengage.firebase.MoEFireBaseHelper
-import com.moengage.firebase.listener.FirebaseEventListener
 import com.moengage.geofence.MoEGeofenceHelper
 import com.moengage.geofence.listener.OnGeofenceHitListener
-import com.moengage.inapp.MoEInAppHelper
 import com.moengage.mi.MoEMiPushHelper
 import com.xiaomi.mipush.sdk.MiPushClient
 import dagger.hilt.android.HiltAndroidApp
@@ -39,24 +35,9 @@ class NewsApp : Application(){
                 NotificationConfig(
                     R.drawable.ic_baseline_bookmark_24,
                     R.drawable.ic_launcher_background,
-                    R.color.design_default_color_error,
-                    tone = null,
-                    isMultipleNotificationInDrawerEnabled = true,
-                    isBuildingBackStackEnabled = true,
-                    isLargeIconDisplayEnabled = true
                 )
             ).configureFcm(
                 FcmConfig(
-                    true
-                )
-            ).configureInApps(
-                InAppConfig(
-                    false,
-                    inAppSet
-                )
-            ).configureGeofence(
-                GeofenceConfig(
-                    true,
                     true
                 )
             ).configureMiPush(
@@ -69,7 +50,7 @@ class NewsApp : Application(){
             .build()
         MoEngage.initialise(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
-        MoEInAppHelper.getInstance().registerListener(InAppListener(this))
+
 
         MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
             override fun geofenceHit(geoFenceHit: Intent): Boolean {
@@ -80,16 +61,6 @@ class NewsApp : Application(){
 
         trackInstallOrUpdate()
 
-        MoEFireBaseHelper.getInstance().addEventListener(object : FirebaseEventListener() {
-            override fun onNonMoEngageMessageReceived(remoteMessage: RemoteMessage) {
-                super.onNonMoEngageMessageReceived(remoteMessage)
-            }
-
-            override fun onTokenAvailable(token: String) {
-                super.onTokenAvailable(token)
-                Log.v("MoEngage", "OnTokenAvailable: $token")
-            }
-        })
         createNotificationChannel()
 
     }
