@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
 //    id 'com.google.gms.google-services'
 //    id 'com.huawei.agconnect'
-//    id 'com.google.gms.google-services'  // Google Services plugin
+    id 'com.google.gms.google-services'  // Google Services plugin
 }
 apply plugin: 'dagger.hilt.android.plugin'
 android {
