@@ -8,7 +8,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager2.widget.ViewPager2
-import com.example.moengage_newapp.*
+import com.example.moengage_newapp.LoginActivity
+import com.example.moengage_newapp.MoEngageAnalyticsHelper
+import com.example.moengage_newapp.R
 import com.example.moengage_newapp.adapter.Page
 import com.example.moengage_newapp.adapter.ViewPagerAdapter
 import com.example.moengage_newapp.data.Article
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.setPageTransformer(ViewPagerTransformer())
         binding.viewPager.adapter = viewPagerAdapter
         binding.viewPager.setCurrentItem(1, false)
-        lifecycle.addObserver(LifeCycleCallbacks(applicationContext))
+//        lifecycle.addObserver(LifeCycleCallbacks(applicationContext))
     }
 
     override fun onBackPressed() {
@@ -139,13 +141,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        InAppController.getInstance().registerActivity(this)
     }
 
     override fun onStop() {
         super.onStop()
-
-        InAppController.getInstance().unRegisterActivity(this)
     }
 
     fun updateLoginStatus(value: Boolean) {

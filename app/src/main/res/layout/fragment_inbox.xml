@@ -88,8 +88,6 @@
                 android:id="@+id/moeInboxEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/moe_inbox_notification_center_empty"
-                android:theme="@style/MoEInboxEmptyBoxTextStyle"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/inbox_recyclerView"
                 app:layout_constraintEnd_toEndOf="parent"

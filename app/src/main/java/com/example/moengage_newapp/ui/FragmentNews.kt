@@ -1,10 +1,9 @@
 package com.example.moengage_newapp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -25,11 +24,9 @@ import com.example.moengage_newapp.util.Resource
 import com.example.moengage_newapp.util.exhaustive
 import com.example.moengage_newapp.util.showSnackbar
 import com.example.moengage_newapp.viewmodels.NewsViewModel
-import com.moengage.cards.ui.CardActivity
 import com.moengage.core.Properties
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -180,9 +177,9 @@ class FragmentNews() : Fragment() {
         binding.logoutText.setOnClickListener {
             logoutUser()
         }
-        binding.cards.setOnClickListener {
-            startActivity(Intent(requireContext(), CardActivity::class.java))
-        }
+//        binding.cards.setOnClickListener {
+//            startActivity(Intent(requireContext(), CardActivity::class.java))
+//        }
     }
 
     //Share News

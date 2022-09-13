@@ -107,13 +107,10 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        InAppController.getInstance().registerActivity(this)
     }
 
     override fun onStop() {
         super.onStop()
-
-        InAppController.getInstance().unRegisterActivity(this)
     }
 
     fun updateLoginStatus(value: Boolean) {

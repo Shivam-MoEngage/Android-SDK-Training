@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
@@ -12,12 +11,11 @@ import android.util.Log
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
-import com.moengage.core.config.*
+import com.moengage.core.config.FcmConfig
+import com.moengage.core.config.LogConfig
+import com.moengage.core.config.MiPushConfig
+import com.moengage.core.config.NotificationConfig
 import com.moengage.core.model.AppStatus
-import com.moengage.geofence.MoEGeofenceHelper
-import com.moengage.geofence.listener.OnGeofenceHitListener
-import com.moengage.mi.MoEMiPushHelper
-import com.xiaomi.mipush.sdk.MiPushClient
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -46,32 +44,16 @@ class NewsApp : Application(){
                     appKey = "5242001758835",
                     isRegistrationEnabled = true
                 )
-            ).configurePushKit(PushKitConfig(true))
+            )
             .build()
-        MoEngage.initialise(moEngage)
+        MoEngage.initialiseDefaultInstance(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
 
-
-        MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
-            override fun geofenceHit(geoFenceHit: Intent): Boolean {
-                Log.v("MoEngage_GEO", geoFenceHit.data.toString())
-                return false
-            }
-        })
 
         trackInstallOrUpdate()
 
         createNotificationChannel()
 
-    }
-
-    private fun registerMoEMiToken() {
-        if (MoEMiPushHelper.getInstance().hasMiUi()) {
-            MiPushClient.registerPush(applicationContext, "2882303761520017835", "5242001758835")
-            val xiaomiToken = MiPushClient.getRegId(applicationContext)
-            if (xiaomiToken != null)
-                MoEMiPushHelper.getInstance().passPushToken(applicationContext, xiaomiToken)
-        }
     }
 
     private fun trackInstallOrUpdate() {
