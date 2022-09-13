@@ -12,19 +12,26 @@ class PushNotification : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         Log.i("FCM Token", p0)
+        //pass the push token
         MoEFireBaseHelper.getInstance().passPushToken(applicationContext, p0)
-        //Whenever a new token is generated, and backend server is resposible for send fcm
-        // token should also be updated their
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
         val pushPayload = remoteMessage.data
+
+        //check if the incoming payload if from moengage
         if (MoEPushHelper.getInstance().isFromMoEngagePlatform(pushPayload)) {
+            //pass the payload to SDK
             MoEFireBaseHelper.getInstance().passPushPayload(applicationContext, pushPayload)
+            Log.v("Something", pushPayload.toString())
+
+        } else {
+
         }
     }
+}
 //
 //        if (remoteMessage.notification  != null){
 //            handleNotification(remoteMessage.notification)
@@ -54,4 +61,3 @@ class PushNotification : FirebaseMessagingService() {
 //            handleNotificationPayload(title, messageBody, bitmap)
 
 //        }
-}

@@ -14,7 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.moengage_newapp.R
 import com.example.moengage_newapp.adapter.InboxCustomAdapter
 import com.example.moengage_newapp.adapter.Page
+import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.internal.logger.Logger
+import com.moengage.inapp.MoEInAppHelper
 import com.moengage.inbox.core.MoEInboxHelper
 import com.moengage.inbox.core.listener.OnMessagesAvailableListener
 import com.moengage.inbox.core.model.InboxMessage
@@ -83,6 +85,19 @@ class FragmentInbox : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        MoEHelper.getInstance(requireContext()).appContext = listOf("InboxFragment")
+        MoEInAppHelper.getInstance().showInApp(requireContext())
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        MoEHelper.getInstance(requireContext()).resetAppContext()
+    }
+
     private fun fetchAllMessages() {
         MoEInboxHelper.getInstance().fetchAllMessagesAsync(requireContext(), onMessageAvailable)
     }
@@ -91,22 +106,12 @@ class FragmentInbox : Fragment() {
         override fun onMessagesAvailable(messageList: List<InboxMessage>) {
             try {
 
-                swipeRefreshLayout.isRefreshing = false
-
-                if (messageList.isNullOrEmpty()) {
-                    inboxRecyclerView.visibility = View.GONE
-                    inboxEmptyTextView.visibility = View.VISIBLE
-                } else {
-
-                    inboxRecyclerView.visibility = View.VISIBLE
-                    inboxEmptyTextView.visibility = View.GONE
-                    inboxListAdapter.setInboxList(messageList.toMutableList())
-                }
             } catch (e: Exception) {
                 Logger.v("$tag onMessagesReceived(): ", e)
             }
         }
     }
+
 
     private fun onBackButtonPressed() {
         if (activity != null && activity is MainActivity) {

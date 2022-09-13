@@ -19,7 +19,6 @@ import com.moengage.firebase.MoEFireBaseHelper
 import com.moengage.firebase.listener.FirebaseEventListener
 import com.moengage.geofence.MoEGeofenceHelper
 import com.moengage.geofence.listener.OnGeofenceHitListener
-import com.moengage.inapp.MoEInAppHelper
 import com.moengage.mi.MoEMiPushHelper
 import com.xiaomi.mipush.sdk.MiPushClient
 import dagger.hilt.android.HiltAndroidApp
@@ -37,15 +36,16 @@ class NewsApp : Application(){
             .configureLogs(LogConfig(LogLevel.VERBOSE, true))
             .configureNotificationMetaData(
                 NotificationConfig(
-                    R.drawable.ic_baseline_bookmark_24,
-                    R.drawable.ic_launcher_background,
-                    R.color.design_default_color_error,
+                    R.drawable.ic_career1,
+                    R.drawable.flyo,
+                    R.color.bookmarkColor,
                     tone = null,
                     isMultipleNotificationInDrawerEnabled = true,
                     isBuildingBackStackEnabled = true,
                     isLargeIconDisplayEnabled = true
                 )
-            ).configureFcm(
+            )
+            .configureFcm(
                 FcmConfig(
                     true
                 )
@@ -69,7 +69,7 @@ class NewsApp : Application(){
             .build()
         MoEngage.initialise(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
-        MoEInAppHelper.getInstance().registerListener(InAppListener(this))
+//        MoEInAppHelper.getInstance().registerListener(InAppListener(this))
 
         MoEGeofenceHelper.getInstance().addListener(object : OnGeofenceHitListener {
             override fun geofenceHit(geoFenceHit: Intent): Boolean {
@@ -133,8 +133,8 @@ class NewsApp : Application(){
             applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "hello_world",
-                "my_channel",
+                "my_channel_id",
+                "my_channel_name",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Created by Vipin"

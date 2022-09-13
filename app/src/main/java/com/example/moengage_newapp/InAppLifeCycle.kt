@@ -16,7 +16,7 @@ class InAppLifeCycle : InAppLifeCycleListener {
     }
 
     override fun onShown(inAppData: InAppData) {
-        TODO("Not yet implemented")
+
     }
 
 }

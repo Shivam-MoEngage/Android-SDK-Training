@@ -16,6 +16,7 @@ import com.example.moengage_newapp.viewmodels.LoginViewModel
 import com.google.gson.Gson
 import com.moengage.core.Properties
 import com.moengage.inapp.MoEInAppHelper
+import com.moengage.widgets.NudgeView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var activityBinding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()
     private var shouldObserve = true
+
+    private lateinit var nudge: NudgeView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,13 +106,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        InAppController.getInstance().registerActivity(this)
+
     }
 
     override fun onStop() {
         super.onStop()
-
-        InAppController.getInstance().unRegisterActivity(this)
     }
 
     fun updateLoginStatus(value: Boolean) {

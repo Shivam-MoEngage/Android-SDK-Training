@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -34,6 +35,11 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
+
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+
+        Log.d("deeplink_test", "" + action + data + "")
 
         val bundle = intent.extras
         val userData = bundle?.getString("user_data") ?: ""

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -25,11 +25,12 @@ import com.example.moengage_newapp.util.Resource
 import com.example.moengage_newapp.util.exhaustive
 import com.example.moengage_newapp.util.showSnackbar
 import com.example.moengage_newapp.viewmodels.NewsViewModel
+import com.moe.pushlibrary.MoEHelper
 import com.moengage.cards.ui.CardActivity
 import com.moengage.core.Properties
+import com.moengage.inapp.MoEInAppHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -200,8 +201,20 @@ class FragmentNews() : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        MoEHelper.getInstance(requireContext()).appContext = listOf("NewsFragment")
+        MoEInAppHelper.getInstance().showInApp(requireContext())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MoEHelper.getInstance(requireContext()).resetAppContext()
+    }
+
     //Sort News
-    private fun sortNews(){
+    private fun sortNews() {
         viewModel.updateSortOrder()
 
         //Refreshing the adapter
