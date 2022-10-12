@@ -89,7 +89,7 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
 
     //Firebase FCM
-    implementation "com.google.firebase:firebase-messaging-ktx:23.0.0"
+    implementation "com.google.firebase:firebase-messaging"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation("androidx.core:core:1.3.1")
@@ -114,9 +114,11 @@ dependencies {
     //PushAmpPlus
 
     //HMS PUSH KIT
-//    implementation("com.moengage:hms-pushkit:3.0.0")
-//    implementation "com.huawei.hms:push:6.1.0.300"
-//    implementation 'com.huawei.agconnect:agconnect-core:1.5.0.300'
+    implementation("com.moengage:hms-pushkit:4.1.1")
+//    implementation "com.huawei.hms:push:6.3.0.304"
+    implementation "com.huawei.hms:push:6.7.0.300"
+    implementation 'com.huawei.agconnect:agconnect-core:1.7.1.300'
+//    implementation 'com.huawei.agconnect:agconnect-core:1.6.0.300'
 
     //compose
 

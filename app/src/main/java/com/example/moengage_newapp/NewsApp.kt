@@ -11,10 +11,7 @@ import android.util.Log
 import com.moe.pushlibrary.MoEHelper
 import com.moengage.core.LogLevel
 import com.moengage.core.MoEngage
-import com.moengage.core.config.FcmConfig
-import com.moengage.core.config.LogConfig
-import com.moengage.core.config.MiPushConfig
-import com.moengage.core.config.NotificationConfig
+import com.moengage.core.config.*
 import com.moengage.core.model.AppStatus
 import dagger.hilt.android.HiltAndroidApp
 
@@ -44,7 +41,7 @@ class NewsApp : Application(){
                     appKey = "5242001758835",
                     isRegistrationEnabled = true
                 )
-            )
+            ).configurePushKit(PushKitConfig(true))
             .build()
         MoEngage.initialiseDefaultInstance(moEngage)
 //        MoEPushHelper.getInstance().messageListener = CustomMessagePushListener()
